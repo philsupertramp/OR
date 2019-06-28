@@ -21,8 +21,38 @@ u = zeros(m, 1);
 u_dach = u;
 v_dach = v;
 
-J = [t];
-J
+J_q = [];
+I = 1;
+
+for i=1:n
+  for j=1:n
+    if !ismember(j, J_q)
+      G_I(i,j) = W(i,j) + u(i) - v(j);
+    else
+      G_I(i,j) = 0;
+    end % if  
+  end % for
+end % for
+
+u_t = G_I(I, :);
+v_t = G_I(:,I);
+
+% find min
+
+for i= 1:n
+  u(i) = u(i) + min(u_t(i), v_t(k));
+  v(i) = v(i) + min(v_t(i), v_t(k));
+end 
+
+if !ismember(k, J_q)
+  M(k, I) = 0;
+else
+  M(I, k) = 1;
+end
+
+M(k, I) = 1;
+J_q = [J_q; k];
+
 
 [~, t] = min(W(1,:)(W(1,:)>0));
 X(1, :) = 0;
