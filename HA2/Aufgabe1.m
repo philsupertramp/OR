@@ -13,8 +13,11 @@ W = [
   8 5 5 6 2 4 1000 8;
   9 4 9 9 8 3 8 1000
 ];
+W = [2,3,1;7,2,3;7,1,3];
+%W = [1,1,1,2;3,2,4,1;4,4,2,4;2,3,3,3];
+W = [10, 7,5,3;7,10,2,3;5,2,10,2;3,3,2,10];
 V = [1,2,3,4,5,6,7,8];
-E = V' * V
+E = zeros(n); %V' * V
 
 pkg load optim;
 
@@ -28,7 +31,7 @@ v = zeros(n,1);
 for i=1:n
   X(1,i) = 1;
 end
-[x,y] = aufgabe1_1(W)
+%[x,y] = aufgabe1_1(W)
 [a,b] = zuordnung(W)
 
 ## Aufgabe 1.2 Generieren Sie aus der optimalen Lösung des Zuordnungsproblems 

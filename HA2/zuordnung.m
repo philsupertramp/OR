@@ -1,4 +1,4 @@
-function [M, J] = zuordnung(W)
+function [x, maxW, J] = zuordnung(W)
 % zuordnung() loest das zuordnungsproblem S = T, sodass Kantengwicht optimal
 % Implementierung von alternativer Formulierung des Verfahrens von Lawler
 %
@@ -6,95 +6,75 @@ function [M, J] = zuordnung(W)
 %       W = quadr. Matrix mit Gewichten der Kanten
 % Output: 
 %       ? lol
-[m, n] = size(W);
-if m ~= n
-  error('Matrix nicht quadr.')
-end %if
-
-% Initialisierung
-M = [];
-
-X = W;
-v = zeros(m, 1);
-u = zeros(m, 1);
-
-u_dach = u;
-v_dach = v;
-
-J_q = [];
-I = 1;
-
-for i=1:n
-  for j=1:n
-    if !ismember(j, J_q)
-      G_I(i,j) = W(i,j) + u(i) - v(j);
-    else
-      G_I(i,j) = 0;
-    end % if  
-  end % for
-end % for
-
-u_t = G_I(I, :);
-v_t = G_I(:,I);
-
-% find min
-
-for i= 1:n
-  u(i) = u(i) + min(u_t(i), v_t(k));
-  v(i) = v(i) + min(v_t(i), v_t(k));
-end 
-
-if !ismember(k, J_q)
-  M(k, I) = 0;
-else
-  M(I, k) = 1;
-end
-
-M(k, I) = 1;
-J_q = [J_q; k];
-
-
-[~, t] = min(W(1,:)(W(1,:)>0));
-X(1, :) = 0;
-X(1, t) = 1;
-v(t) = W(1,t);
-for i=2:n
-  v(i) = W(1,t);
-end
-%[x,z] = linprog(c,[],[],Aeq,beq,LB,UB);
-I = 2;
-while I<=n
-  for i=1:n
-    for j=1:n
-      if !ismember(j, J)
-        X(i,j) = W(i,j) + u(i) - v(j);
-      else
-        X(i,j) = 0;
-      end % if j in J
-    end % for j
-  end
-  v_dach(J) = 0;
-  % using the Dijkstra-Algorithm to
-  % determine k as the shortes way from I
-  k = dijkstra(X(I,:)')
-  % ermittle P = kuerzester Weg von I nach k
-  v_dach = X(k,:);
-  u_dach = X(:,k);
+  [m, n] = size(W);
+  if m ~= n
+    error('Matrix nicht quadr.')
+  end %if
+  %% 1
+  x = zeros(n);
+  v = zeros(n,1);
+  u = zeros(n,1);
+  uq = zeros(n,1);
+  vq = zeros(n,1);
   
-  for ii = 1:n
-    if ii <= I
-      u(ii) = u(ii) + min(u_dach(ii), v_dach(k));
-    else
-      u(ii) = u(ii) + v_dach(ii);  
-    end
-    v(ii) = v(ii) + min(v_dach(ii), v_dach(k));
-  end % for u and v
-  J(I) = k;
-  J
-  M = [M; k];
-  X(I,:) = 0;
-  X(I,k) = 1;
-  I = I + 1;
-end % for i
+  %% 2
+  [~, t] = min(W(1,1:n));
+  x(1,t) = 1;
+  v(t) = W(1,t);
+  u(2:n) = W(1,t);
+  I = 2;
+  c = W;
 
+  j=t;
+  
+  while I <= n
+    %% 3
+    I
+    Eb = x == 0;
+    Er = x == 1;
+    G = Eb | Er;
+    c = (W + repmat(u,1,n) - repmat(v',n,1)) .* Eb
+    c(Er == 1) = 0
+    
+    I
+    J = find(sum(x,1))
+    for ind=1:n
+      if ind < I
+        uq(ind) = uq(ind) + c(I, ind);
+      elseif ind == I
+          uq(ind) = 0
+      else  
+        uq(ind) = Inf;
+      end
+    end
+  
+    uq
+    [uqi, k] = min(uq)
+    for z=1:length(J)
+      uq(z) = c(I, J(z));
+    end  
+    uq(k) = 0;  
+    %[P, k] = min(c(I, find(~sum(x,1))));
+    
+    J_ = find(sum(x,1));
+    %% 4
+    x(I,k) = 1;
+    
+    uq
+    vq = c(I,:)'
+    
+    for q=1:n
+      if q<=I
+        u(q) = u(q) + min(uq(q),vq(k));
+      else
+        u(q) = u(q) + vq(k);
+      end %if 
+      v(q) = v(q) + min(vq(q), vq(k));
+    end %for
+    I = I+1;
+    v
+    u
+  end%While
+  maxW = sum(W(find(x)));
+  J = find(x);
 end % function
