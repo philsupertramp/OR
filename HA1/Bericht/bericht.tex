@@ -1,0 +1,68 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+
+%opening
+\title{1. Hausaufgabe\\ Operations Research\\Prof. Dr. T. Winter}
+\author{Philipp Zettl 841523}
+
+\begin{document}
+
+\maketitle
+
+\section*{Aufgabe 1}
+Für das Rucksackproblem
+ $$
+ max \sum_{i=1}^{n} p_i x_i $$\newline
+ $$unter \sum_{i=1}^n w_i x_i \leq c$$ \newline
+ $$x_i \in \{0, 1\}$$
+soll für verschiedene Datensätze die jeweilige Optimallösung berechnet werden.
+
+\subsection*{1. Datensatz P02}
+Maximale Kapazität: 26 \\
+Gegenstände: 5\\
+Nutzen $p$ = (24 13 23 15 16$)^T$\\
+Gewichte $w$ = (12 7 11 8 9$)^T$\\
+\subsection*{2. Datensatz P05}
+Maximale Kapazität: 104 \\
+Gegenstände: 15\\
+Nutzen $p$ = (350 400 450 20 70 8 5 5$)^T$\\
+Gewichte $w$ = (25 35 45 5 25 3 2 2$)^T$\\
+\subsection*{3. Datensatz P07}
+Maximale Kapazität: 750 \\
+Gegenstände: 5\\
+Nutzen $p$ = (135 139 149 150 156 163 173 184 192 201 210 214 221 229 240$)^T$\\
+Gewichte $w$ = (70 73 77 80 82 87 90 94 98 106 110 113 115 118 120$)^T$\\
+\subsection*{4. Datensatz P08}
+Maximale Kapazität: 6404180 \\
+Gegenstände: 5\\
+Nutzen $p$ = (825594 1677009 1676628 1523970 943972 97426 69666 1296457 1679693
+  1902996 1844992 1049289 1252836 1319836 953277 2067538 675367 853655 
+  1826027 65731 901489 577243 466257 369261$)^T$\\
+Gewichte $w$ = (382745 799601 909247 729069 467902 44328 34610 698150 823460 903959 
+  853665 551830 610856 670702 488960 951111 323046 446298 931161 31385 
+  496951 264724 224916 169684$)^T$\\
+\section*{Aufgabe 1.1:}
+\subsection*{Lösung mit Hilfe der dynamischen Programmierung zur Bestimmung der Optimallösung}
+\textbf{P02:}\\
+Lösungsmenge: \{2, 3, 4\}\\
+benötigtes Gewicht: 26\\
+maximal Wert der Elemente aus T: 51\\
+\textbf{P05:} \\
+Lösungsmenge: \{1, 3, 4, 5, 7, 8\}\\
+benötigtes Gewicht: 104 \\
+maximal Wert der Elemente aus T: 900\\
+\textbf{P07:} \\
+Lösungsmenge: \{1, 3, 5, 7, 8, 9, 14, 15\}
+benötigtes Gewicht: 749 \\
+maximal Wert der Elemente aus T: 1458\\
+\textbf{P08:} \\
+Lösungsmenge: \{1, 2, 4, 5, 6, 10, 11, 13, 16, 22, 23, 24\}\\
+benötigtes Gewicht: 6402560 \\
+maximal Wert der Elemente aus T: 13549094
+
+\section*{Aufgabe 1.3}
+Durch den mimalen Wert $min(\omega(x_i))$ der berechneten Gewichtungen $\omega(x_i) $:\\
+$\omega(x_1) = 0.5$, $\omega(x_2) = \frac{7}{13} $, $\omega(x_3) = \frac{1}{23} $, $\omega(x_4) = \frac{8}{15} $, $\omega(x_5) = \frac{9}{11}$
+lässt sich der Startwert für 
+\end{document}
